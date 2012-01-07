@@ -108,7 +108,7 @@ int _tmain(int argc, _TCHAR* argv[])
 */
 //-------------------------------------------------------------------------------------------
 
-	char plansza[7][7];
+	char plansza[8][8];
 
 	vector <int> x;
 	vector <int> y;
@@ -142,6 +142,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	plansza[4][4] = 'W';
 
 	boolean wpisano;
+	boolean graj;
+	boolean mozna_grac = true;
 	int tmpX;
 	int tmpY;
 	int tmpXX;
@@ -299,85 +301,135 @@ int _tmain(int argc, _TCHAR* argv[])
 			cout << "x[" << mozliwosci << "] = " << x[mozliwosci] << "  " << "y[" << mozliwosci << "] = " << y[mozliwosci] << endl;
 		cout << endl;
 
+		if (x.size() > 0)
+			mozna_grac = true;
+		else
+			mozna_grac = false;
+
 		//******************************************************************************//
-		if (kolejka%2 == 0) // bia³y
+		if (kolejka%2 == 0 && mozna_grac == true) // bia³y
 		{
 			int  losowanie = rand()%x.size();
 			plansza [x[losowanie]][y[losowanie]] = 'W';
 			cout << "Gralem " << "X= " << x[losowanie] << " Y= " << y[losowanie] << endl;
-			tmpX = x[losowanie];
-			tmpY = y[losowanie];
+
+			cout << "przed" << endl;
 
 			//do gory
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			while (plansza[tmpX][tmpY-1] == 'B')
 			{
 				if (plansza[tmpX][tmpY-2] == 'W')
 				{
 					tmpXX = tmpX;
 					tmpYY = tmpY-2;
+					graj = true;
 				}
-				ile_ruchow = tmpY - tmpYY;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'W';
-					tmpYY++;
+					ile_ruchow = tmpY - tmpYY;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'W';
+						tmpYY++;
+					}
 				}
-
+				tmpY--;
 			}
+
+			cout << "gora przeszla" << endl;
+
 			//na dol
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			while (plansza[tmpX][tmpY+1] == 'B')
 			{
 				if (plansza[tmpX][tmpY+2] == 'W')
 				{
 					tmpXX = tmpX;
 					tmpYY = tmpY+2;
+					graj = true;
 				}
-				ile_ruchow = tmpYY - tmpY;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'W';
-					tmpYY--;
+					ile_ruchow = tmpYY - tmpY;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'W';
+						tmpYY--;
+					}
 				}
+				tmpY++;
 			}
+
+						cout << "dol przeszedl" << endl;
+
 			//na lewo
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			while (plansza[tmpX-1][tmpY] == 'B')
 			{
 				if (plansza[tmpX-2][tmpY] == 'W')
 				{
 					tmpXX = tmpX-2;
 					tmpYY = tmpY;
+					graj = true;
 				}
-				ile_ruchow = tmpX - tmpXX;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'W';
-					tmpXX++;
+					ile_ruchow = tmpX - tmpXX;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'W';
+						tmpXX++;
+					}
 				}
+				tmpX--;
 			}
+
+						cout << "lewo przeszlo" << endl;
+
 			//na prawo
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			while (plansza[tmpX+1][tmpY] == 'B')
 			{
 				if (plansza[tmpX+2][tmpY] == 'W')
 				{
 					tmpXX = tmpX+2;
 					tmpYY = tmpY;
+					graj = true;
 				}
-				ile_ruchow = tmpXX - tmpX;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'W';
-					tmpXX--;
+					ile_ruchow = tmpXX - tmpX;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'W';
+						tmpXX--;
+					}
 				}
+				tmpX++;
 			}
+
+						cout << "prawo przeszlo" << endl;
 		}
-		if (kolejka%2 == 1) // czarny
+		if (kolejka%2 == 1 && mozna_grac == true) // czarny
 		{
 			int  losowanie = rand()%x.size();
 			plansza [x[losowanie]][y[losowanie]] = 'B';
 			cout << "Gralem " << "X= " << x[losowanie] << " Y= " << y[losowanie] << endl;
+
+			cout << "przed" << endl;
+
 			tmpX = x[losowanie];
 			tmpY = y[losowanie];
-
+			graj = false;
 			//do gory
 			while (plansza[tmpX][tmpY-1] == 'W')
 			{
@@ -385,15 +437,25 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					tmpXX = tmpX;
 					tmpYY = tmpY-2;
+					graj = true;
 				}
-				ile_ruchow = tmpY - tmpYY;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'B';
-					tmpYY++;
+					ile_ruchow = tmpY - tmpYY;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'B';
+						tmpYY++;
+					}
 				}
-
+				tmpY--;
 			}
+
+			cout << "gora przesz³a" << endl;
+			
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			//na dol
 			while (plansza[tmpX][tmpY+1] == 'W')
 			{
@@ -401,14 +463,25 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					tmpXX = tmpX;
 					tmpYY = tmpY+2;
+					graj = true;
 				}
-				ile_ruchow = tmpYY - tmpY;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'B';
-					tmpYY--;
+					ile_ruchow = tmpYY - tmpY;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'B';
+						tmpYY--;
+					}
 				}
+				tmpY++;
 			}
+
+			cout << "dol przeszed³" << endl;
+
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			//na lewo
 			while (plansza[tmpX-1][tmpY] == 'W')
 			{
@@ -416,14 +489,25 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					tmpXX = tmpX-2;
 					tmpYY = tmpY;
+					graj = true;
 				}
-				ile_ruchow = tmpX - tmpXX;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'B';
-					tmpXX++;
+					ile_ruchow = tmpX - tmpXX;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'B';
+						tmpXX++;
+					}
 				}
+				tmpX--;
 			}
+
+			cout << "lewo przesz³o" << endl;
+
+			tmpX = x[losowanie];
+			tmpY = y[losowanie];
+			graj = false;
 			//na prawo
 			while (plansza[tmpX+1][tmpY] == 'W')
 			{
@@ -431,14 +515,21 @@ int _tmain(int argc, _TCHAR* argv[])
 				{
 					tmpXX = tmpX+2;
 					tmpYY = tmpY;
+					graj = true;
 				}
-				ile_ruchow = tmpXX - tmpX;
-				for (int graj = 0 ; graj < ile_ruchow ; graj++)
+				if (graj)
 				{
-					plansza[tmpXX][tmpYY] = 'B';
-					tmpXX--;
+					ile_ruchow = tmpXX - tmpX;
+					for (int graj = 0 ; graj < ile_ruchow ; graj++)
+					{
+						plansza[tmpXX][tmpYY] = 'B';
+						tmpXX--;
+					}
 				}
+				tmpX++;
 			}
+
+			cout << "prawo przesz³o" << endl;
 		}
 
 		for (int i=0 ; i<8 ; i++)
@@ -456,17 +547,27 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 
+	int wynikW = 0;
+	int wynikB = 0;
 
-//-------------------------- wyswietlanie koncowego wyniku
-
-	for (int i=0 ; i<8 ; i++)
+	for (int wiersze=0 ; wiersze<8 ; wiersze++)
 	{
-		for (int j=0 ; j<8 ; j++)
+		for (int kolumny=0 ; kolumny<8 ; kolumny++)
 		{
-			cout << plansza[j][i] << " ";
+			if (plansza[wiersze][kolumny] == 'W')
+				wynikW = wynikW + 1;
+			if (plansza[wiersze][kolumny] == 'B')
+				wynikB = wynikB + 1;
 		}
-		cout << endl;
 	}
+
+	cout << "********************" << endl;
+	cout << "********************" << endl;
+	cout << "Wynik bialego = " << wynikW << endl;
+	cout << "Wynik czarnego = " << wynikB << endl;
+	cout << "********************" << endl;
+	cout << "********************" << endl;
+
 
 //------------------------------------------------------------------------
 /*	
